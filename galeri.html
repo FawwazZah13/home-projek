@@ -1,0 +1,438 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- link fontawesome -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        <title>FAMILY</title>
+    </head>
+    <style>
+    *{
+        margin: 0;
+        padding: 0;
+        user-select: none;
+        box-sizing: border-box;
+        font-family: sans-serif;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    body{
+    background-color: rgb(236, 236, 236);
+    }
+    
+    h1{
+        text-align: center;
+        padding: 1rem 0;
+        text-transform: uppercase;
+        color: #000;
+    }
+    
+    .gallery_container{
+        display: grid;
+        grid-template-columns: repeat(8,1fr);
+        grid-template-rows: repeat(8,5vw);
+        grid-gap: 1rem;
+        padding: 1rem;
+    }
+    
+    .gallery_container .gallery_item{
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .gallery_container .gallery_item img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: .3s;
+    }
+    
+    .gallery_container .gallery_item figcaption{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        font-weight: bold;
+        opacity: 0;
+        transition: .3s;
+        text-align: center;
+    }
+    
+    
+    .gallery_container .gallery_item:hover img{
+        filter: brightness(.5);
+        transform: scale(1.2);
+    }
+    
+    .gallery_container .gallery_item:hover figcaption{
+        opacity: 1;
+    }
+    
+    .gallery_container .gallery_item.item_1{
+        grid-column-start: 1;
+        grid-column-end: 3;
+        grid-row-start: 1;
+        grid-row-end: 5;
+    }
+    
+    .gallery_container .gallery_item.item_2{
+        grid-column-start: 3;
+        grid-column-end: 5;
+        grid-row-start: 1;
+        grid-row-end: 5;
+    }
+    
+    .gallery_container .gallery_item.item_3{
+        grid-column-start: 5;
+        grid-column-end: 9;
+        grid-row-start: 1;
+        grid-row-end: 7;
+    }
+    
+    .gallery_container .gallery_item.item_4{
+        grid-column-start: 1;
+        grid-column-end: 5;
+        grid-row-start: 5;
+        grid-row-end: 9;
+    }
+    .gallery_container .gallery_item.item_5{
+        grid-column-start: 1;
+        grid-column-end: 5;
+        grid-row-start: 9;
+        grid-row-end: 12;
+    }
+    .gallery_container .gallery_item.item_6{
+        grid-column-start: 5;
+        grid-column-end: 9;
+        grid-row-start: 7;
+        grid-row-end: 11;
+    }
+    .gallery_container .gallery_item.item_7{
+        grid-column-start: 5;
+        grid-column-end: 9;
+        grid-row-start: 11;
+        grid-row-end: 11;
+    }
+    
+    @media (max-width: 600px) {
+        .gallery_container{
+            grid-gap: .5em;
+        }
+    
+        .gallery_container .gallery_item figcaption{
+            font-size: .8rem;
+        }
+    
+        .gallery_container .gallery_item.item_1{
+            grid-column-start: 1;
+            grid-column-end: 5;
+            grid-row-start: 1;
+            grid-row-end: 5;
+        }
+        
+        .gallery_container .gallery_item.item_2{
+            grid-column-start: 5;
+            grid-column-end: 10;
+            grid-row-start: 1;
+            grid-row-end: 5;
+        }
+        
+        .gallery_container .gallery_item.item_3{
+            grid-column-start: 5;
+            grid-column-end: 10;
+            grid-row-start: 5;
+            grid-row-end: 11;
+        }
+        
+        .gallery_container .gallery_item.item_4{
+            grid-column-start: 1;
+            grid-column-end: 5;
+            grid-row-start: 5;
+            grid-row-end: 9;
+        }
+        .gallery_container .gallery_item.item_5{
+            grid-column-start: 1;
+            grid-column-end: 5;
+            grid-row-start: 9;
+            grid-row-end: 14;
+        }
+        .gallery_container .gallery_item.item_6{
+            grid-column-start: 5;
+            grid-column-end: 10;
+            grid-row-start: 11;
+            grid-row-end: 12;
+        }
+        .gallery_container .gallery_item.item_7{
+            grid-column-start: 5;
+            grid-column-end: 10;
+            grid-row-start: 12;
+            grid-row-end: 14;
+        }
+    
+    }
+    
+    @media (max-width: 423px){
+        .gallery_container{
+            display: flex;
+            flex-direction: column;
+        }
+    }
+    
+    .lightbox_container{
+        width: 100%;
+        height: 100vh;
+        background-color: #000000c0;
+        position: fixed;
+        z-index: 0;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        transform: scale(.5);
+        opacity: 0%;
+        visibility: hidden;
+        transition: .3s;
+    }
+    
+    .lightbox_container.show{
+        transform: scale(1);
+        opacity: 100%;
+        visibility: visible;
+    }
+    
+    .lightbox_container #close{
+        color: #fff;
+        z-index: 3;
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        padding: .25em .4em;
+        border-radius: 50%;
+        transform: scale(1.7);
+        cursor: pointer;
+        transition: .3s;
+    }
+    
+    .lightbox_container #close:hover{
+        background-color: #dfdfdf6c;
+    }
+    
+    .lightbox_container #close:active{
+        background-color: rgb(0, 0, 0);
+        transition: 0s !important;
+    }
+    
+    .lightbox_container .parent_navigation{
+        position: static;
+        z-index: 3;
+        width: 100%;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .lightbox_container .parent_navigation #ripple{
+        font-size: 1.6rem;
+        color: #fff;
+        padding: .8em;
+        margin: 4rem;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: .3s;
+    }
+    
+    .lightbox_container .parent_navigation #ripple:hover{
+        background-color: #dfdfdf6c;
+    }
+    
+    .lightbox_container .parent_navigation #ripple span{
+        position: absolute;
+        background-color: #dfdfdf6c;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        animation: anim 1s;
+        border-radius: 50%;
+    }
+    
+    @keyframes anim {
+        0%{
+            height: 0px;
+            width: 0px;
+            opacity: 100%;
+        }
+        100%{
+            height: 500px;
+            width: 500px;
+            opacity: 0%;
+        }
+    }
+    
+    .lightbox_container .lightbox_item{
+        position: absolute;
+        height: auto;
+        width: 70%;
+        transition: .3s ease-in;
+    }
+    
+    .lightbox_container .lightbox_item.active{
+        opacity: 0;
+    }
+    
+    .lightbox_container .lightbox_item img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .lightbox_container .lightbox_item figcaption{
+        text-align: center;
+        color: #fff;
+        font-weight: bold;
+        font-size: 1.4rem;
+        padding-top: .5rem;
+    }
+    
+    @media (max-width: 700px){
+        .lightbox_container .lightbox_item{
+            width: 83%;
+        }
+        .lightbox_container .parent_navigation #ripple{
+            margin: 0rem;
+            padding: .4em;
+        }
+    }
+    </style>
+    <script>
+    const lightbox = document.querySelector('.lightbox_container');
+    const btn = document.querySelectorAll('#ripple');
+    const next = document.querySelector('.next');
+    const prev = document.querySelector('.prev');
+    const close = document.getElementById('close');
+    
+    for (let i = 0; i < btn.length; i++){
+        btn[i].addEventListener('click', (e)=>{
+            let x = e.clientX - e.target.offsetLeft;
+            let y = e.clientY - e.target.offsetTop;
+    
+            let ripple = document.createElement('span');
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+    
+            btn[i].appendChild(ripple);
+    
+            setTimeout(() => {
+                ripple.remove();
+            }, 700);
+        });
+    };
+    
+    
+    function openmodal(){
+        lightbox.classList.add('show');
+    }
+    
+    close.addEventListener('click', ()=>{
+        lightbox.classList.remove('show');
+    });
+    
+    prev.addEventListener('click', ()=>{
+        plusslide(-1);
+    });
+    
+    next.addEventListener('click', ()=>{
+        plusslide(1);
+    });
+    
+    let slideindex = 1;
+    showslide(n);
+    
+    function plusslide(n){
+        showslide(slideindex += n);
+    };
+    
+    function currentslide(n){
+        showslide(slideindex  = n);
+    };
+    
+    function showslide(n){
+        const slide = document.querySelectorAll('.lightbox_item');
+        
+        if(n > slide.length){
+            slideindex=1;
+        }
+        
+        if(n < 1){
+            slideindex = slide.length;
+        }
+    
+        for (let i = 0; i < slide.length; i++){
+            slide[i].classList.add('active');
+        }
+        slide[slideindex-1].classList.remove('active');
+    }
+    </script>
+    <body>
+        <!-- Ini Judul -->
+        <h1>WZX PICTURE</h1>
+        <style>
+            a{
+                text-decoration: none;
+                color: rgb(0, 0, 0);
+                background-color: rgba(0, 0, 0, 0.13);
+            }
+        </style>
+    <center><h2><a href="index.html">BERANDA</a></h2></center>
+    
+        <!-- Ini Gallery -->
+        <div class="gallery_container_parent">
+            <div class="gallery_container">
+                <figure class="gallery_item item_1" onclick="openmodal();currentslide(1)">
+                    <img src="./img/1.jpg" alt="bike_image">
+                    <figcaption class="caption"><br><i class="none"></i> </figcaption>
+                </figure>
+        
+                <figure class="gallery_item item_2" onclick="openmodal();currentslide(2)">
+                    <img src="./img/2.jpg" alt="phone_image">
+                    <figcaption class="caption"><br><i class="none"></i> </figcaption>
+                </figure>
+        
+                <figure class="gallery_item item_3" onclick="openmodal();currentslide(3)">
+                    <img src="./img/3.jpg" alt="car_image">
+                    <figcaption class="caption"><br><br><br> <i class="none"></i> </figcaption>
+                </figure>
+        
+                <figure class="gallery_item item_4" onclick="openmodal();currentslide(4)">
+                    <img src="./img/fwz.jpg" alt="truck_image">
+                    <figcaption class="caption"><br><i class="none"></i> </figcaption>
+                </figure>
+        
+                <figure class="gallery_item item_5" onclick="openmodal();currentslide(5)">
+                    <img src="./img/4.jpg" alt="bike_image">
+                    <figcaption class="caption"><br><i class="none"></i> </figcaption>
+                </figure>
+        
+                <figure class="gallery_item item_6" onclick="openmodal();currentslide(6)">
+                    <img src="./img/5.jpg" alt="phome_image">
+                    <figcaption class="caption"><br><i class="none"></i> </figcaption>
+                </figure>
+        
+                <figure class="gallery_item item_7" onclick="openmodal();currentslide(7)">
+                    <img src="./img/6.jpg" alt="truck_image">
+                    <figcaption class="caption"><br><i class="none"></i> </figcaption>
+                </figure>
+            </div>
+        </div>
+
+        <!-- script javascript -->
+        <script src="script.js"></script>
+    </body>
+    </html>
